@@ -8,6 +8,7 @@ class Config:
     FIRST_NAME = "Bola"
     LAST_NAME = "Doris"
     POSTAL_CODE = 234
+    WAIT_TIME = 5
 
 
 
