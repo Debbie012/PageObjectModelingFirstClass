@@ -1,7 +1,7 @@
 import pytest
 from selenium import webdriver
 
-from ActionPage.Login_page import LoginPage, AddtoCartPage, PaymentProcessPage, LogoutPage
+from ActionPage.Login_page import LoginPage, PaymentProcessPage, LogoutPage, AddToCartPage
 from Config.configuration import Config
 
 
@@ -20,18 +20,37 @@ def login(driver_setup):
     login_page.open_login_page(Config.BASE_URL)
     return login_page
 
-def test_login_page_on_automation_play_ground_website(login):
+def test_login_page_on_sauce_demo_website(login):
     login.username(Config.USERNAME)
     login.password(Config.PASSWORD)
     login.submit()
 
-def test_end_to_end_user_flow(login, driver_setup):
-    add_to_cart = AddtoCartPage(driver_setup)
-    add_to_cart.add_items_to_cart(["Backpack", "Bike Light", "Bolt TShirt", "Fleece Jacket", "Onesie", "Tshirt Red"])
-    add_to_cart.go_to_cart()
+def test_add_to_cart_on_sauce_demo_website(login):
+    add_cart = AddToCartPage(login.driver)
+    add_cart.click_backpack()
+    add_cart.click_bike_light()
+    add_cart.click_bolt_tshirt()
+    add_cart.click_fleece_jacket()
+    add_cart.click_onesie()
+    add_cart.click_tshirt_red()
 
-    checkout = PaymentProcessPage(driver_setup)
-    checkout.checkout("Adeyemo", "Alakija", "234")
+def test_payment_process_on_sauce_demo_website(login):
+    payment_process = PaymentProcessPage(login.driver)
+    payment_process.click_cart()
+    payment_process.click_checkout()
+    payment_process.first_name(Config.FIRST_NAME)
+    payment_process.last_name(Config.LAST_NAME)
+    payment_process.postal_code(Config.POSTAL_CODE)
+    payment_process.click_continue_button()
+    payment_process.click_finish()
 
-    logout = LogoutPage(driver_setup)
-    logout.logout()
+def test_logout_on_sauce_demo_website(login):
+    logout = LogoutPage(login.driver)
+    logout.click_menu()
+    logout.click_logout()
+
+
+
+
+
+
